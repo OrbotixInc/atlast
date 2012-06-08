@@ -49,6 +49,12 @@ module Atlast
           end
           order.OrderDate Time.now.strftime("%D")
           order.ShipMethod opts[:ship_method]
+          if opts[:gift_message].blank?
+            order.AddGiftWrap "no"
+          else
+            order.AddGiftWrap "yes"
+            order.GiftMessage opts[:gift_message]
+          end
           order.Items do |xml_items|
             opts[:items].each do |item|
               xml_items.Item do |xml_item|
