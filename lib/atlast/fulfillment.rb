@@ -40,8 +40,8 @@ module Atlast
           order.CustomerInfo do |ci|
             ci.FirstName opts[:address][:first_name]
             ci.LastName opts[:address][:last_name]
-            ci.Address1 opts[:address][:address1]
-            ci.Address2 opts[:address][:address2]
+            ci.Address1 opts[:address][:address]
+            ci.Address2 opts[:address][:suite]
             ci.City opts[:address][:city]
             ci.State opts[:address][:state]
             ci.Zip opts[:address][:postal_code]
@@ -58,8 +58,8 @@ module Atlast
           order.Items do |xml_items|
             opts[:items].each do |item|
               xml_items.Item do |xml_item|
-                xml_item.SKU item[:sku]
-                xml_item.Qty item[:quantity]
+                xml_item.SKU item.sku
+                xml_item.Qty item.quantity
               end
             end
           end
