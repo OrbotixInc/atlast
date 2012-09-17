@@ -45,7 +45,7 @@ module Atlast
             ci.City opts[:address][:city]
             ci.State opts[:address][:state]
             ci.Zip opts[:address][:postal_code]
-            ci.Country "USA"
+            ci.Country opts[:address][:country] || "US"
           end
           order.OrderDate Time.now.strftime("%D")
           order.ShipMethod opts[:ship_method]
