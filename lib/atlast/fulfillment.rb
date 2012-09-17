@@ -35,6 +35,7 @@ module Atlast
       opts = {address: {}, ship_method: "", items: [], order_id: UUID.new.generate}.merge(options)
       builder = Builder::XmlMarkup.new
       builder.instruct! :xml, version: "1.0", encoding: "UTF-8"
+      destination_country = opts[:address][:country] || "US"
       xml = builder.Orders(apiKey: key) do |orders|
         orders.Order(orderID: opts[:order_id]) do |order|
           order.CustomerInfo do |ci|
@@ -45,7 +46,10 @@ module Atlast
             ci.City opts[:address][:city]
             ci.State opts[:address][:state]
             ci.Zip opts[:address][:postal_code]
-            ci.Country opts[:address][:country] || "US"
+            ci.Country destination_country
+            if destination_country != "US"
+              ci.Phone opts[:address][:phone] || ""
+            end
           end
           order.OrderDate Time.now.strftime("%D")
           order.ShipMethod opts[:ship_method]
