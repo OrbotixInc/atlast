@@ -41,6 +41,7 @@ module Atlast
           order.CustomerInfo do |ci|
             ci.FirstName opts[:address][:first_name]
             ci.LastName opts[:address][:last_name]
+            ci.Company opts[:address][:company] || ""
             ci.Address1 opts[:address][:address1]
             ci.Address2 opts[:address][:address2]
             ci.City opts[:address][:city]
