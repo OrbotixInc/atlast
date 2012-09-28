@@ -53,9 +53,16 @@ module Atlast
             end
           end
           if destination_country != "US"
-            order.Customs_ShipmentContents = "Electronic Toy"
-            order.Customs_DeclaredValue = "$60"
-            order.Customs_CountryOfOrigin = "China"
+            order.Customs_ShipmentContents "Electronic Toy"
+            declared_value = 0.0
+            opts[:items].each do |item|
+              clean_sku = item[:sku].gsub(/ /,"").upcase
+              if ["S-001","S-002"].member?(clean_sku)
+                declared_value += (60 * item[:quantity])
+              end
+            end
+            order.Customs_DeclaredValue declared_value
+            order.Customs_CountryOfOrigin "China"
           end
           order.OrderDate Time.now.strftime("%D")
           order.ShipMethod opts[:ship_method]
