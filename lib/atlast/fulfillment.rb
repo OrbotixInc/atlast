@@ -52,6 +52,11 @@ module Atlast
               ci.Phone opts[:address][:phone] || ""
             end
           end
+          if destination_country != "US"
+            order.Customs_ShipmentContents = "Electronic Toy"
+            order.Customs_DeclaredValue = "$60"
+            order.Customs_CountryOfOrigin = "China"
+          end
           order.OrderDate Time.now.strftime("%D")
           order.ShipMethod opts[:ship_method]
           if opts[:gift_message].blank?
