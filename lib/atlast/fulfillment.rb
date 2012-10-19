@@ -84,7 +84,6 @@ module Atlast
           end
         end
       end
-      puts xml
       response = RestClient.post(@root_url + "/post_shipments.aspx", xml, content_type: :xml, accept: :xml)
       Crack::XML.parse response
     end
