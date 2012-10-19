@@ -66,10 +66,12 @@ module Atlast
           end
           order.OrderDate Time.now.strftime("%D")
           order.ShipMethod opts[:ship_method]
-          if opts[:gift_message].blank?
-            order.AddGiftWrap "no"
-          else
+          if opts[:gift_wrap] == "yes" || !opts[:gift_message].blank?
             order.AddGiftWrap "yes"
+          else
+            order.AddGiftWrap "no"
+          end
+          if !opts[:gift_message].blank?
             order.GiftMessage opts[:gift_message]
           end
           order.Items do |xml_items|
@@ -82,6 +84,7 @@ module Atlast
           end
         end
       end
+      puts xml
       response = RestClient.post(@root_url + "/post_shipments.aspx", xml, content_type: :xml, accept: :xml)
       Crack::XML.parse response
     end
