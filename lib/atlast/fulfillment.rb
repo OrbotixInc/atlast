@@ -32,6 +32,8 @@ module Atlast
     end
 
     def ship(options = {})
+      t_shirt_skus = ["MTS - 001","MTM - 001","MTL-001","MTXL - 001","MTXXL-001","WTS - 001","WTM - 001","WTL - 001","WTXL - 001","YTS - 001","YTM - 001","YTL - 001","YGS - 001","YGM - 001","YGL - 001","WTXXL - 001"]
+      t_shirt_skus = t_shirt_skus.map{|s| s.gsub(/ /,"").upcase}
       opts = {address: {}, ship_method: "", items: [], order_id: UUID.new.generate}.merge(options)
       builder = Builder::XmlMarkup.new
       builder.instruct! :xml, version: "1.0", encoding: "UTF-8"
@@ -59,6 +61,8 @@ module Atlast
               clean_sku = item[:sku].gsub(/ /,"").upcase
               if ["S-001","S-002","S-002IN"].member?(clean_sku)
                 declared_value += (60 * item[:quantity])
+              elsif t_shirt_skus.member?(clean_sku)
+                declared_value += (6.50 * item[:quantity])
               end
             end
             order.Customs_DeclaredValue declared_value
