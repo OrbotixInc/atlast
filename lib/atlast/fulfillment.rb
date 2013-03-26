@@ -80,6 +80,13 @@ module Atlast
           end
           order.Items do |xml_items|
             opts[:items].each do |item|
+              if ["SPHTEE-001S","SPHTEE-001M","SPHTEE-001L","SPHTEE-001XL"].member?(item[:sku])
+                xml_items.Item do |xml_item| 
+                  size = item[:sku].gsub("SPHTEE-001","")
+                  xml_item.SKU "SPTM#{size}-001"
+                  xml_item.Qty item[:quantity]
+                end                  
+              end
               xml_items.Item do |xml_item|
                 xml_item.SKU item[:sku]
                 xml_item.Qty item[:quantity]
